@@ -1,31 +1,70 @@
 /*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
 /*===== VARIABLES CSS =====*/
 :root {
   --header-height: 3rem;
   --font-semi: 600;
-  /*===== Colores =====*/
-  /*Purple 260 - Red 355 - Blue 224 - Pink 340*/
-  /* HSL color mode */
+  
+  /*===== Colors =====*/
   --hue-color: 224;
   --first-color: hsl(var(--hue-color), 89%, 60%);
   --second-color: hsl(var(--hue-color), 56%, 12%);
-  /*===== Fuente y tipografia =====*/
+
+  /*===== THEME VARIABLES (Default: Dev Mode) =====*/
+  /* Dev Mode = Pure Black & Terminal Green/White aesthetics */
+  --body-color: #000000;
+  --text-color: #ECEFF1;
+  --text-color-light: #B0BEC5;
+  --container-color: #263238; /* Card background in dark modes */
+  --header-color: #000000;
+  --input-color: #1c1c1c;
+  --border-color: #37474F;
+  --shadow-color: rgba(146, 161, 176, 0.15);
+
+  /*===== Font & Typography =====*/
   --body-font: "Poppins", sans-serif;
   --big-font-size: 2rem;
   --h2-font-size: 1.25rem;
   --normal-font-size: .938rem;
   --smaller-font-size: .75rem;
-  /*===== Margenes =====*/
+
+  /*===== Margins =====*/
   --mb-2: 1rem;
   --mb-4: 2rem;
   --mb-5: 2.5rem;
   --mb-6: 3rem;
+
   /*===== z index =====*/
   --z-back: -10;
   --z-fixed: 100;
-  background: #000000;
 }
+
+/*===== LIGHT THEME VARIABLES =====*/
+body.light-theme {
+  --body-color: #FAFAFA;
+  --text-color: #1A1A1A;
+  --text-color-light: #5A5A5A;
+  --container-color: #FFFFFF;
+  --header-color: #FAFAFA;
+  --input-color: #F0F0F0;
+  --border-color: #E0E0E0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --second-color: hsl(var(--hue-color), 56%, 12%); /* Keep footer/accents dark blue */
+}
+
+/*===== DARK THEME VARIABLES (Standard UI Dark Mode) =====*/
+body.dark-theme {
+  --body-color: #121212; /* Soft Dark Grey (Material Design Standard) */
+  --text-color: #E0E0E0;
+  --text-color-light: #A0A0A0;
+  --container-color: #1E1E1E;
+  --header-color: #121212;
+  --input-color: #2C2C2C;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
 @media screen and (min-width: 968px) {
   :root {
     --big-font-size: 3.5rem;
@@ -42,31 +81,26 @@
 
 html {
   scroll-behavior: smooth;
-  background: black;
+  background: var(--body-color);
 }
 
 body {
   margin: var(--header-height) 0 0 0;
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
-  color: var(--second-color);
-  background: black;
+  color: var(--text-color);
+  background: var(--body-color);
+  transition: background 0.3s, color 0.3s; /* Smooth theme switch */
 }
 
-h1, h2, p {
+h1, h2, p, ul, a {
   margin: 0;
-  color: #ECEFF1;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  color: var(--text-color);
+  transition: color 0.3s;
 }
 
 a {
   text-decoration: none;
-  color: #ECEFF1;
 }
 
 img {
@@ -116,9 +150,10 @@ img {
   top: 0;
   left: 0;
   z-index: var(--z-fixed);
-  background-color: #000000;
-  box-shadow: 0 1px 4px rgba(146, 161, 176, 0.15);
-  color: #ECEFF1;
+  background-color: var(--header-color);
+  box-shadow: 0 1px 4px var(--shadow-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 /*===== NAV =====*/
@@ -129,6 +164,7 @@ img {
   align-items: center;
   font-weight: var(--font-semi);
 }
+
 @media screen and (max-width: 767px) {
   .nav__menu {
     position: fixed;
@@ -137,17 +173,18 @@ img {
     width: 80%;
     height: 100%;
     padding: 2rem;
-    background-color: var(--second-color);
+    background-color: var(--body-color); /* Changed to body color for seamless look */
     transition: 1.0s;
   }
 }
+
 .nav__item {
   margin-bottom: var(--mb-4);
-  color: #ECEFF1;
+  color: var(--text-color);
 }
 .nav__link {
   position: relative;
-  color: #fff;
+  color: var(--text-color);
 }
 .nav__link:hover {
   position: relative;
@@ -162,12 +199,29 @@ img {
   background-color: var(--first-color);
 }
 .nav__logo {
-  color: #ECEFF1;
+  color: var(--text-color);
 }
 .nav__toggle {
-  color: #ECEFF1;
+  color: var(--text-color);
   font-size: 2.0rem;
   cursor: pointer;
+}
+
+/* Theme Change Button Styles */
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.change-theme {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-right: var(--mb-2);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.change-theme:hover {
+    color: var(--first-color);
 }
 
 /*Active menu*/
@@ -210,7 +264,8 @@ img {
   width: max-content;
   margin-bottom: var(--mb-2);
   font-size: 1.5rem;
-  color: #ECEFF1;
+  color: var(--text-color);
+  transition: color 0.3s;
 }
 .home__social-icon:hover {
   color: var(--first-color);
@@ -228,20 +283,17 @@ img {
   width: 360px;
 }
 .home__blob {
-  filter: drop-shadow(0 0 15px #90A4AE); /* Adjust the color and blur as needed */
+  filter: drop-shadow(0 0 15px #90A4AE);
 }
-
 .home__blob:hover {
-  filter: drop-shadow(0 0 15px #ECEFF1); /* A slightly stronger glow on hover */
+  filter: drop-shadow(0 0 15px #ECEFF1);
 }
-
-
 
 /*BUTTONS*/
 .button {
   display: inline-block;
   background-color: var(--first-color);
-  color: #fff;
+  color: #fff; /* Button text always white */
   padding: 0.75rem 2.5rem;
   font-weight: var(--font-semi);
   border-radius: 0.5rem;
@@ -249,88 +301,66 @@ img {
   margin-bottom: 10px;
 }
 .button:hover {
-  box-shadow: 0px 10px 36px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 10px 36px var(--shadow-color);
 }
 
 #sticky-contact {
-	-webkit-transition: all 1s ease;
-	-moz-transition: all 1s ease;
-	-ms-transition: all 1s ease;
-	-o-transition: all 1s ease;
-	transition: all 1s ease;
+  transition: all 1s ease;
 }
-
 #sticky-contact.issticky {
-	opacity:0;
+  opacity: 0;
 }
-
 #sticky-contact-clone {
-	position:fixed;
-	z-index:9999;
-	-webkit-transition: all 1s ease;
-	-moz-transition: all 1s ease;
-	-ms-transition: all 1s ease;
-	-o-transition: all 1s ease;
-	transition: all 1s ease;
+  position: fixed;
+  z-index: 9999;
+  transition: all 1s ease;
 }
 
 /* Index Page Styles */
 .video-container {
     margin-bottom: 8px;
 }
-
 .video-container video {
     max-width: 100%;
     height: 360px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
-
 
 /* ===== CONDITIONS ===== */
 .conditions__container {
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto;
     padding: 1rem 0;
-    background-color: none; /* Optional background color */
-    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
-    white-space: nowrap; /* Prevent container from wrapping */
+    white-space: nowrap;
 }
-
 .conditions__track {
     display: inline-block;
     animation: scrollConditions linear 30s infinite;
     padding-left: 100%;
 }
-
 .condition {
-    font-size: 3.5rem; /* Adjust the size of the words */
+    font-size: 3.5rem;
     font-weight: bold;
-    color: #ECEFF1;
-    padding: 0 1.5rem; /* Spacing between words */
-    display: inline-block; /* Display words inline */
+    color: var(--text-color);
+    padding: 0 1.5rem;
+    display: inline-block;
+    transition: color 0.3s;
 }
 
 @keyframes scrollConditions {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
 }
 
-/* Responsive adjustments if needed */
 @media screen and (max-width: 768px) {
     .condition {
         font-size: 2rem;
         padding: 0 1rem;
     }
     .conditions__track {
-        animation-duration: 40s; /* Adjust speed for smaller screens */
+        animation-duration: 40s;
     }
 }
-
-
 
 
 /* ===== ABOUT =====*/
@@ -340,6 +370,10 @@ img {
 }
 .about__subtitle {
   margin-bottom: var(--mb-2);
+  color: var(--text-color);
+}
+.about__text {
+    color: var(--text-color-light);
 }
 .about__img {
   justify-self: center;
@@ -356,11 +390,11 @@ img {
 }
 .skills__subtitle {
   margin-bottom: var(--mb-2);
-  color: #ECEFF1;
+  color: var(--text-color);
 }
 .skills__text {
   margin-bottom: var(--mb-4);
-  color: #ECEFF1;
+  color: var(--text-color-light);
 }
 .skills__data {
   display: flex;
@@ -371,8 +405,9 @@ img {
   padding: 0.5rem 1rem;
   margin-bottom: var(--mb-4);
   border-radius: 0.5rem;
-  box-shadow: 0px 4px 25px rgba(14, 36, 49, 0.15);
-  background: #263238;
+  box-shadow: 0px 4px 25px var(--shadow-color);
+  background: var(--container-color);
+  transition: background 0.3s;
 }
 .skills__icon {
   font-size: 2rem;
@@ -382,7 +417,7 @@ img {
 .skills__names {
   display: flex;
   align-items: center;
-  color: #ECEFF1;
+  color: var(--text-color);
 }
 .skills__bar {
   position: absolute;
@@ -393,115 +428,71 @@ img {
   border-radius: 0.5rem;
   z-index: var(--z-back);  
 }
-
 .skills__percentage {
-  color: #ECEFF1;
+  color: var(--text-color);
 }
 
-.skills__java {
-  width: 80%;
-}
-.skills__kotlin {
-  width: 70%;
-}
-.skills__html {
-  width: 90%;
-}
-.skills__css {
-  width: 75%;
-}
-.skills__js {
-    width: 60%;
-}
-
-/* Example of what to update in your CSS file */
-
-.skills__html {
-    width: 95%; /* Updated percentage */
-}
-.skills__css {
-    width: 85%;
-}
-.skills__js {
-    width: 75%;
-}
-.skills__react { /* formerly skills__java or skills__kotlin */
-    width: 65%;
-}
-.skills__git {
-    width: 70%;
-}
+.skills__html { width: 95%; }
+.skills__css { width: 85%; }
+.skills__js { width: 75%; }
+.skills__react { width: 65%; }
+.skills__git { width: 70%; }
 
 .skills__img {
   border-radius: 0.5rem;
 }
 
 /* ===== WORK =====*/
-/* ===== WORK (REWRITTEN) =====*/
-
-/* --- Grid Layout (Responsive on all sizes) --- */
 .work__grid {
     display: grid;
-    /* Responsive Grid: Items stay 300px wide until the screen allows 2 or 3 columns */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 2rem;
     margin-left: 25px;
     margin-right: 25px;
 }
 
-/* --- Work Item (Now the clickable <a> tag) --- */
 .work__item {
-    display: flex; /* Use flex to stack image and details vertically */
+    display: flex;
     flex-direction: column;
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Inherit text color */
-
-    /* Card styling */
-    position: relative; /* Relative for subtle internal positioning if needed */
+    text-decoration: none;
+    color: inherit;
+    position: relative;
     border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0px 4px 25px rgba(14, 36, 49, 0.15);
+    box-shadow: 0px 4px 25px var(--shadow-color);
     font-weight: bolder;
-    background-color: #ECEFF1; /* Light background for details area */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+    background-color: var(--container-color);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s;
 }
 
-/* Hover effect for the entire clickable box */
 .work__item:hover {
-    transform: translateY(-5px); /* Lift the box slightly */
-    box-shadow: 0px 10px 40px rgba(14, 36, 49, 0.3); /* Stronger shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 40px var(--shadow-color);
 }
 
-/* --- Image Container (Holds the image and title overlay) --- */
 .work__image-container {
     position: relative;
     overflow: hidden;
-    /* Ensure image container takes up remaining space if needed */
     flex-grow: 1; 
 }
 
 .work__image-container img {
-    /* Image stays within its container */
     width: 100%;
     height: auto;
     display: block;
     transition: transform 0.3s ease-in-out;
 }
 
-/* Subtle image zoom on hover */
 .work__item:hover .work__image-container img {
-    transform: scale(1.05); /* Gentle zoom */
+    transform: scale(1.05);
 }
 
-
-/* --- Title Overlay (Stays at the bottom of the image) --- */
 .work__title-overlay {
     position: absolute;
-    bottom: 0; /* Sticky to the bottom of the image */
+    bottom: 0;
     width: 100%;
     left: 0;
-    transform: none; /* Reset transform */
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.85); /* Always dark overlay for text readability */
     color: #fff;
     padding: 0.75rem 1rem;
     font-size: 1.1rem;
@@ -510,41 +501,6 @@ img {
     z-index: 2; 
 }
 
-/* --- Details Section (Content shown below the image) --- */
-.work__details {
-    /* Set positioning to static, making it flow normally */
-    position: static; 
-    width: 100%;
-    height: auto; /* Auto height based on content */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start; /* Align text to the left */
-    padding: 1rem;
-    text-align: left;
-    background-color: #ECEFF1; /* Light color for contrast with body background */
-    color: var(--second-color); /* Dark text for readability */
-    opacity: 1; 
-    visibility: visible;
-    z-index: 1;
-}
-
-.work__details h2 {
-    /* Style project titles */
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: var(--first-color); 
-    font-size: 1.25rem;
-}
-
-.work__details p {
-    /* Style project descriptions and tools */
-    font-size: 0.9rem;
-    color: #555; 
-    margin-bottom: 0.5rem;
-}
-
-
 /* ===== CONTACT =====*/
 .contact__input {
   width: 100%;
@@ -552,9 +508,12 @@ img {
   font-weight: var(--font-semi);
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1.5px solid var(--second-color);
+  border: 1.5px solid var(--border-color);
+  background-color: var(--input-color);
+  color: var(--text-color);
   outline: none;
   margin-bottom: var(--mb-4);
+  transition: background 0.3s, border-color 0.3s;
 }
 .contact__button {
   display: block;
@@ -576,6 +535,7 @@ img {
 .footer__title {
   font-size: 2rem;
   margin-bottom: 8px;
+  color: #fff;
 }
 .footer__social {
   margin-bottom: var(--mb-4);
@@ -588,6 +548,7 @@ img {
 }
 .footer__copy {
   font-size: var(--smaller-font-size);
+  color: #fff;
 }
 
 /* ===== MEDIA QUERIES=====*/
@@ -627,11 +588,6 @@ img {
     justify-content: center;
     column-gap: 1rem;
   }
-  .work__container {
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 2rem;
-    padding-top: 2rem;
-  }
   .contact__form {
     width: 360px;
     padding-top: 2rem;
@@ -670,7 +626,7 @@ img {
     display: none;
   }
   .nav__link {
-    color: #ECEFF1;
+    color: var(--text-color);
   }
   .home {
     padding: 8rem 0 2rem;
