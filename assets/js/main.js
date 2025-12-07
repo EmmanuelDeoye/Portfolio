@@ -128,18 +128,70 @@ window.addEventListener('resize', function() {
 });
 
 
-
+/*===== HOME IMAGE SLIDER =====*/
 const homeImage = document.getElementById('home-image-slide');
 const images = [
     'assets/img/blue.png',
-    'assets/img/blue.png',
+    'assets/img/blue.png', // Add different images here if you have them
 ];
 let currentImageIndex = 0;
 
 function changeHomeImage() {
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    homeImage.setAttribute('href', images[currentImageIndex]);
+    if(homeImage) {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        homeImage.setAttribute('href', images[currentImageIndex]);
+    }
 }
 
 // Change the image every 3 seconds
-setInterval(changeHomeImage, 3000);
+if(homeImage) {
+    setInterval(changeHomeImage, 3000);
+}
+
+
+/*==================== 3-WAY THEME TOGGLE (DEV -> LIGHT -> DARK) ====================*/
+const themeButton = document.getElementById('theme-button');
+const bodyElement = document.body;
+
+// 1. Define the Modes (0=Dev, 1=Light, 2=Dark)
+const themeModes = ['dev', 'light', 'dark'];
+const themeIcons = ['bx-terminal', 'bx-sun', 'bx-moon'];
+
+// 2. Get Saved Theme from LocalStorage (Default to 0/Dev if null)
+let currentThemeIndex = localStorage.getItem('selected-theme-index') 
+                        ? parseInt(localStorage.getItem('selected-theme-index')) 
+                        : 0;
+
+// 3. Function to Apply Theme
+const applyTheme = (index) => {
+    // Remove all theme classes first to clean state
+    bodyElement.classList.remove('light-theme', 'dark-theme');
+    
+    // Apply new class (Dev mode has no class, it uses :root defaults)
+    if (themeModes[index] === 'light') {
+        bodyElement.classList.add('light-theme');
+    } else if (themeModes[index] === 'dark') {
+        bodyElement.classList.add('dark-theme');
+    }
+
+    // Update the Icon class
+    // We keep 'bx' and 'change-theme' and swap the middle icon class
+    if(themeButton){
+        themeButton.className = `bx ${themeIcons[index]} change-theme`;
+    }
+
+    // Save to LocalStorage
+    localStorage.setItem('selected-theme-index', index);
+}
+
+// 4. Initial Load
+applyTheme(currentThemeIndex);
+
+// 5. Click Event Listener
+if(themeButton){
+    themeButton.addEventListener('click', () => {
+        // Increment index, reset to 0 if it exceeds length (0 -> 1 -> 2 -> 0)
+        currentThemeIndex = (currentThemeIndex + 1) % themeModes.length;
+        applyTheme(currentThemeIndex);
+    });
+}
